@@ -1,0 +1,22 @@
+{#polls/templates/polls라고 만들 필요 없이, 그냥 polls/templates에 넣어도 되지 않을까하고 생각할지도 모르지만 이것은 별로 좋은 생각이 아닙니다.#}
+{#Django는 이름이 일치하는 첫번째 템플릿을 선택하는데, 만약 동일한 템플릿 이름이 다른 어플리케이션에 있을 경우 Django는 이 둘 간의 차이를 구분하지 못합니다.#}
+{#Django에게 정확한 템플릿을 지정하기 위해서 가장 편리한 방법은 이름공간으로 구분짓는 것인데, 어플리케이션의 이름으로 된 디렉토리에 이러한 템플릿들을 넣으면 됩니다.#}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>polls/templates/polls/index.html</title>
+</head>
+<body>
+    {% if latest_question_list %}
+        <ul>
+        {% for question in latest_question_list %}
+            <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</li>
+        {% endfor %}
+        </ul>
+    {%  else %}
+        <p>No polls are available.</p>
+    {%  endif %}
+</body>
+</html>
