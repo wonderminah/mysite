@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Question
+from .models import Question, Choice
 
 # Register your models here.
 
@@ -8,3 +8,4 @@ from .models import Question
 # 여기서 하나만 더 하면 됩니다. 관리 사이트에 Question 객체가 관리 인터페이스를 가지고 있다는것을 알려주는 것입니다.
 # 이것을 하기 위해서는, polls/admin.py 파일을 열어 다음과 같이 편집하면 됩니다.
 admin.site.register(Question)
+admin.site.register(Choice)
