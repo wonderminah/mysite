@@ -1,6 +1,6 @@
-{#polls/templates/polls라고 만들 필요 없이, 그냥 polls/templates에 넣어도 되지 않을까하고 생각할지도 모르지만 이것은 별로 좋은 생각이 아닙니다.#}
-{#Django는 이름이 일치하는 첫번째 템플릿을 선택하는데, 만약 동일한 템플릿 이름이 다른 어플리케이션에 있을 경우 Django는 이 둘 간의 차이를 구분하지 못합니다.#}
-{#Django에게 정확한 템플릿을 지정하기 위해서 가장 편리한 방법은 이름공간으로 구분짓는 것인데, 어플리케이션의 이름으로 된 디렉토리에 이러한 템플릿들을 넣으면 됩니다.#}
+{# polls/templates/polls라고 만들 필요 없이, 그냥 polls/templates에 넣어도 되지 않을까하고 생각할지도 모르지만 이것은 별로 좋은 생각이 아닙니다. #}
+{# Django는 이름이 일치하는 첫번째 템플릿을 선택하는데, 만약 동일한 템플릿 이름이 다른 어플리케이션에 있을 경우 Django는 이 둘 간의 차이를 구분하지 못합니다. #}
+{# Django에게 정확한 템플릿을 지정하기 위해서 가장 편리한 방법은 이름공간으로 구분짓는 것인데, 어플리케이션의 이름으로 된 디렉토리에 이러한 템플릿들을 넣으면 됩니다. #}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +12,17 @@
     {% if latest_question_list %}
         <ul>
         {% for question in latest_question_list %}
-            <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</li>
+            {# <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li> #}
+            {# 이러한 강력하게 결합되고 하드코딩된 접근방식의 문제는 수 많은 템플릿을 가진 프로젝트들의 URL을 바꾸는 게 어려운 일이 된다는 점입니다. #}
+            {# 그러나, polls.urls 모듈의 path() 함수에서 인수의 이름을 정의했으므로, {% url %} template 태그를 사용하여 url 설정에 정의된 특정한 URL 경로들의 의존성을 제거할 수 있습니다. #}
+            {# 아래 코드를 참조하십시오. #}
+
+            {# <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li> #}
+            {# 이것이 polls.urls 모듈에 서술된 URL 의 정의를 탐색하는 식으로 동작합니다. 다음과 같이 'detail' 이라는 이름의 URL 이 어떻게 정의되어 있는지 확인할 수 있습니다. #}
+            {# 만약 상세 뷰의 URL을 polls/specifics/12/로 바꾸고 싶다면, 템플릿에서 바꾸는 것이 아니라 polls/urls.py에서 바꿔야 합니다. #}
+
+            {# 이제, polls/index.html 템플릿의 기존 내용을 아래와 같이 이름공간으로 나눠진 상세 뷰를 가리키도록 변경하세요.  #}
+            <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
         {% endfor %}
         </ul>
     {%  else %}
