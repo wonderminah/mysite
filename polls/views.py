@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 
 # Create your views here.
@@ -76,8 +77,10 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last five published questions."""
-        return Question.objects.order_by('pub_date')[:5]
-
+        # return Question.objects.order_by('pub_date')[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('pub_date')[:5]
+        # Question.objects.filter (pub_date__lte = timezone.now ())는
+        # timezone.now보다 pub_date가 작거나 같은 Question을 포함하는 queryset을 반환합니다.
 
 class DetailView(generic.DetailView):
     model = Question
