@@ -78,13 +78,24 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """Return the last five published questions."""
         # return Question.objects.order_by('pub_date')[:5]
-        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('pub_date')[:5]
+        return Question.objects.filter(
+            pub_date__lte=timezone.now()
+        ).order_by('pub_date')[:5]
         # Question.objects.filter (pub_date__lte = timezone.now ())는
         # timezone.now보다 pub_date가 작거나 같은 Question을 포함하는 queryset을 반환합니다.
+
 
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
+
+    # 우리가 만든 것이 잘 작동합니다. 그러나 미래의 설문들은 목록에 나타나지는 않지만, 사용자가 URL을 알고 있거나, 추측하면 접근할 수 있습니다.
+    # 그래서 우리는 DetailView에 비슷한 제약 조건을 추가할 필요가 있습니다.
+    def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 class ResultsView(generic.DetailView):

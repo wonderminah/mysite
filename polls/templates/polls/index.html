@@ -2,6 +2,8 @@
 {# Django는 이름이 일치하는 첫번째 템플릿을 선택하는데, 만약 동일한 템플릿 이름이 다른 어플리케이션에 있을 경우 Django는 이 둘 간의 차이를 구분하지 못합니다. #}
 {# Django에게 정확한 템플릿을 지정하기 위해서 가장 편리한 방법은 이름공간으로 구분짓는 것인데, 어플리케이션의 이름으로 된 디렉토리에 이러한 템플릿들을 넣으면 됩니다. #}
 
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 <!DOCTYPE html>
 <html lang="en">
 <head>
